@@ -21,7 +21,7 @@ play.volume = 0.5
 pause.volume = 0.5
 final.volume = 0.5
 
-let tempoDecorridoEmSegundos = 5;
+let tempoDecorridoEmSegundos = 1500;
 let intervaloId = null;
 
 const banner = document.querySelector('.app__image');
@@ -29,16 +29,19 @@ const title = document.querySelector('.app__title');
 
 
 focoBt.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 1500;
     alterarContexto('foco')
     focoBt.classList.add('active');
 });
 
 curtoBt.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 300;
     alterarContexto('descanso-curto');
     curtoBt.classList.add('active');
 });
 
 longoBt.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 900;
     alterarContexto('descanso-longo');
     longoBt.classList.add('active');
 });
@@ -52,6 +55,7 @@ musicaFocoInput.addEventListener('change', () => {
 });
 
 function alterarContexto(contexto) {
+    mostrarTempo()
     botoes.forEach(botoes => botoes.classList.remove('active'));
     html.setAttribute('data-contexto', contexto);
     banner.setAttribute('src', `/imagens/${contexto}.png`);
@@ -66,6 +70,7 @@ function alterarContexto(contexto) {
 
         case 'descanso-longo':
             title.innerHTML = 'Hora de voltar à superfície.<br><strong class="app__title-strong">Faça uma pausa longa.</strong>';
+            break;
 
         default:
             break;
@@ -107,8 +112,9 @@ function parar() {
 }
 
 function mostrarTempo(){
-    const tempo = tempoDecorridoEmSegundos
-    tempoNaTela.innerHTML = `${tempo}`
+    const tempo = new Date(tempoDecorridoEmSegundos * 1000)
+    const tempoFormatado = tempo.toLocaleTimeString('pt-br', {minute: '2-digit', second: '2-digit'})
+    tempoNaTela.innerHTML = `${tempoFormatado}`
 }
 
 mostrarTempo()
